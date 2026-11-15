@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="Logoinoxline.png" /> 
+  <title>InoxLine - Registro de Inspeções</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(90deg, #0a3d62, #3c6382);
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 15px 30px;
+    }
+
+    header img {
+      width: 110px;
+      margin-right: 15px;
+      border-radius: 20px;
+    }
+
+    nav {
+      background-color: #2f3640;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      color: #3498db;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #0a3d62;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 15px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #0a3d62;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #3c6382;
+    }
+
+    .mensagem {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .sucesso {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .erro {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #0a3d62;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .status-aprovado {
+      color: green;
+      font-weight: bold;
+    }
+
+    .status-reprovado {
+      color: red;
+      font-weight: bold;
+    }
+
+    .status-analise {
+      color: orange;
+      font-weight: bold;
+    }
+    .status-estacionado {
+      color:#3498db;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="Logoinoxline.png" alt="Logo InoxLine Metalúrgica">
+  <h1>InoxLine Metalúrgica</h1>
+</header>
+
+<nav>
+  <a href="cadastroadm.html">Produto</a>
+  <a href="estoqueadm.html">Estoque</a>
+  <a href="controleadm.html">Controle</a>
+  <a href="contatoadm.html">Contato</a>
+</nav>
+
+<main>
+  <h2>Registro de Inspeções de Produtos</h2>
+
+  <div id="mensagem" class="mensagem"></div>
+
+  <form id="formInspecao">
+    <label>Produto:<br>
+      <input id="produtoNome" type="text" placeholder="Nome do produto" required>
+    </label>
+
+    <label>Código/Lote:<br>
+      <input id="produtoLote" type="text" placeholder="Código ou número do lote" required>
+    </label>
+
+    <label>Status da Inspeção:<br>
+      <select id="statusInspecao" required>
+        <option value="">Selecione...</option>
+        <option value="Estacionado">Estacionado</option>
+        <option value="Em Análise">Em Análise</option>
+        <option value="Aprovado">Aprovado</option>
+        <option value="Reprovado">Reprovado</option>
+      </select>
+    </label>
+
+    <label>Responsável:<br>
+      <input id="responsavel" type="text" placeholder="Nome do inspetor" required>
+    </label>
+
+    <label>Data da Inspeção:<br>
+      <input id="dataInspecao" type="date" required>
+    </label>
+
+    <label>Observações:<br>
+      <textarea id="observacoes" rows="2" placeholder="Observações adicionais..."></textarea>
+    </label>
+
+    <button type="submit">Registrar Inspeção</button>
+  </form>
+
+  <h3 style="margin-top: 40px;">Histórico de Inspeções</h3>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Lote</th>
+        <th>Status</th>
+        <th>Data</th>
+        <th>Responsável</th>
+      </tr>
+    </thead>
+    <tbody id="tabelaInspecoes">
+      <tr>
+        <td colspan="5" style="text-align: center;">Nenhuma inspeção registrada ainda.</td>
+      </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<footer style="text-align:center;padding:20px;background:#2f3640;color:#fff;">
+  © 2025 InoxLine Metalúrgica | Todos os direitos reservados
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAc_lowJxwAlE-azXV0BUZEta9344_fXqQ",
+  authDomain: "produtosp-i.firebaseapp.com",
+  databaseURL: "https://produtosp-i-default-rtdb.firebaseio.com",
+  projectId: "produtosp-i",
+  storageBucket: "produtosp-i.firebasestorage.app",
+  messagingSenderId: "951845239282",
+  appId: "1:951845239282:web:e6d9d795194072a0a2d36b"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const formInspecao = document.getElementById('formInspecao');
+const mensagem = document.getElementById('mensagem');
+const tabelaInspecoes = document.getElementById('tabelaInspecoes');
+
+function exibirMensagem(texto, tipo = 'erro') {
+  mensagem.textContent = texto;
+  mensagem.className = `mensagem ${tipo}`;
+  setTimeout(() => {
+    mensagem.textContent = '';
+    mensagem.className = 'mensagem';
+  }, 3000);
+}
+
+function formatarData(dataString) {
+  if (!dataString) return '';
+  const data = new Date(dataString);
+  return data.toLocaleDateString('pt-BR');
+}
+
+function getStatusClass(status) {
+  switch(status) {
+    case 'Aprovado': return 'status-aprovado';
+    case 'Reprovado': return 'status-reprovado';
+    case 'Em Análise': return 'status-analise';
+    case 'Estacionado': return 'status-estacionado';
+    default: return '';
+  }
+}
+
+function carregarInspecoes() {
+  db.ref('inspecoes').orderByChild('dataRegistro').limitToLast(20).on('value', (snapshot) => {
+    const inspecoes = snapshot.val();
+    
+    if (!inspecoes || Object.keys(inspecoes).length === 0) {
+      tabelaInspecoes.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center;">Nenhuma inspeção registrada ainda.</td>
+        </tr>
+      `;
+      return;
+    }
+    
+    let html = '';
+    const inspecoesArray = Object.entries(inspecoes).reverse(); 
+    
+    inspecoesArray.forEach(([key, inspecao]) => {
+      const statusClass = getStatusClass(inspecao.statusInspecao);
+      
+      html += `
+        <tr>
+          <td>${inspecao.produtoNome || ''}</td>
+          <td>${inspecao.produtoLote || ''}</td>
+          <td class="${statusClass}">${inspecao.statusInspecao || ''}</td>
+          <td>${formatarData(inspecao.dataInspecao)}</td>
+          <td>${inspecao.responsavel || ''}</td>
+        </tr>
+      `;
+    });
+    
+    tabelaInspecoes.innerHTML = html;
+  });
+}
+
+formInspecao.addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const inspecao = {
+    produtoNome: document.getElementById('produtoNome').value.trim(),
+    produtoLote: document.getElementById('produtoLote').value.trim(),
+    statusInspecao: document.getElementById('statusInspecao').value,
+    responsavel: document.getElementById('responsavel').value.trim(),
+    dataInspecao: document.getElementById('dataInspecao').value,
+    observacoes: document.getElementById('observacoes').value.trim(),
+    dataRegistro: new Date().toISOString()
+  };
+  
+  db.ref('inspecoes').push(inspecao)
+    .then(() => {
+      exibirMensagem('Inspeção registrada com sucesso!', 'sucesso');
+      formInspecao.reset();
+     
+      const hoje = new Date().toISOString().split('T')[0];
+      document.getElementById('dataInspecao').value = hoje;
+    })
+    .catch((error) => {
+      exibirMensagem('Erro ao registrar inspeção: ' + error.message);
+    });
+});
+
+window.addEventListener('DOMContentLoaded', function() {
+  const hoje = new Date().toISOString().split('T')[0];
+  document.getElementById('dataInspecao').value = hoje;
+  
+  carregarInspecoes();
+});
+</script>
+
+</body>
+</html>

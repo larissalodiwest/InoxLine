@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="Logoinoxline.png"/>
+  <title>InoxLine - Acesso Administrador</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background: linear-gradient(135deg, #0b1b2a, #12293f);
+      color: #e0e0e0;
+    }
+
+    .side-banner {
+      flex: 1;
+      background: linear-gradient(rgba(10, 20, 35, 0.6), rgba(10, 20, 35, 0.6)), url("adms.png") center center / cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .side-banner h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #f1f1f1;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .side-banner p {
+      max-width: 400px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: #cfd8dc;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    .login-section {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #1e2f44;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-section::before {
+      content: "";
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(52, 152, 219, 0.15) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      z-index: 0;
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 50px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+      z-index: 1;
+      backdrop-filter: blur(8px);
+      text-align: center;
+    }
+
+    .login-box h1 {
+      text-align: center;
+      color: #fff;
+      font-size: 28px;
+      margin-bottom: 40px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .login-box h1.admin-title {
+      font-size: 20px;
+      color: #b0bec5;
+      margin-bottom: 5px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: none;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #b0bec5;
+      font-size: 14px;
+    }
+
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    input[type="email"]::placeholder, input[type="password"]::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    input[type="email"]:focus, input[type="password"]:focus {
+      background-color: rgba(255, 255, 255, 0.12);
+      border: 1px solid #3498db;
+      box-shadow: 0 0 8px rgba(52, 152, 219, 0.4);
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #2980b9, #1f5f8b);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    button[type="submit"]:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    }
+
+    #mensagem {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 15px;
+      font-weight: 600;
+      min-height: 24px;
+    }
+
+    .mensagem-sucesso {
+      color: #4caf50;
+    }
+
+    .mensagem-erro {
+      color: #ff5252;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="side-banner">
+    <h2>InoxLine Metalúrgica</h2>
+    <p>Com a Excelência em processos e qualidade certificada como nosso lema, é fundamental que você acesse o sistema de auditoria agora para garantir e manter os padrões de qualidade InoxLine em cada etapa de nossa produção</p>
+  </div>
+
+  <div class="login-section">
+    <div class="login-box">
+      <h1 class="admin-title">Acesso</h1>
+      <h1>ADMINISTRADOR</h1>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="Digite seu E-mail" required>
+        </div>
+
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" placeholder="Digite sua senha" required>
+        </div>
+
+        <button type="submit" id="btnEntrar">ENTRAR</button>
+        
+      </form>
+
+      <div id="mensagem"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCBtmJIfsZHYAvViyc_SUIwsW3gqHk-QUU",
+      authDomain: "inoxline-projeto.firebaseapp.com",
+      databaseURL: "https://inoxline-projeto-default-rtdb.firebaseio.com",
+      projectId: "inoxline-projeto",
+      storageBucket: "inoxline-projeto.firebasestorage.app",
+      messagingSenderId: "597834940795",
+      appId: "1:597834940795:web:eaa17701e5de5549047dde",
+      measurementId: "G-42Y2SF8PZS"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+
+    const mensagemElement = document.getElementById("mensagem");
+    const loginForm = document.getElementById("loginForm");
+    const btnEntrar = document.getElementById("btnEntrar");
+
+    function exibirMensagem(texto, tipo = "erro") {
+      mensagemElement.textContent = texto;
+      mensagemElement.className = tipo === "sucesso" ? "mensagem-sucesso" : "mensagem-erro";
+    }
+
+    function toggleBotao(estado) {
+      btnEntrar.disabled = estado;
+      btnEntrar.textContent = estado ? "ENTRANDO..." : "ENTRAR";
+    }
+
+    function verificarPermissoes(userId) {
+      const userRef = ref(database, 'users/' + userId);
+      
+      get(userRef)
+        .then((snapshot) => {
+          const userData = snapshot.val();
+          
+          if (userData) {
+            if (userData.role === "administrador" || 
+                userData.role === "admin" || 
+                userData.email === "nataliaadmin@gmail.com") {
+              window.location.href = "cadastroadm.html"; 
+              return;
+            } else {
+              auth.signOut();
+              exibirMensagem("Acesso restrito a administradores.", "erro");
+            }
+          } else {
+            exibirMensagem("Usuário sem permissão configurada. Contate o TI.", "erro");
+            auth.signOut();
+          }
+        })
+        .catch((error) => {
+          exibirMensagem("Erro ao verificar permissões de acesso.", "erro");
+          auth.signOut();
+          toggleBotao(false);
+        });
+    }
+
+    loginForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value.trim();
+
+      if (!email || !senha) {
+        exibirMensagem("Preencha todos os campos.", "erro");
+        return;
+      }
+
+      toggleBotao(true);
+      exibirMensagem("", ""); 
+
+      signInWithEmailAndPassword(auth, email, senha)
+        .then((userCredential) => {
+          verificarPermissoes(userCredential.user.uid);
+        })
+        .catch((error) => {
+          toggleBotao(false);
+          let mensagemErro = "E-mail ou senha incorretos.";
+          
+          switch (error.code) {
+            case 'auth/invalid-email':
+            case 'auth/user-not-found':
+            case 'auth/wrong-password':
+              mensagemErro = "E-mail ou senha incorretos!";
+              break;
+            case 'auth/user-disabled':
+              mensagemErro = "Esta conta foi desativada.";
+              break;
+            case 'auth/too-many-requests':
+              mensagemErro = "Muitas tentativas. Tente novamente mais tarde.";
+              break;
+          }
+          exibirMensagem(mensagemErro, "erro");
+        });
+    });
+
+    document.getElementById("email").focus();
+
+    document.getElementById("senha").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        loginForm.dispatchEvent(new Event("submit"));
+      }
+    });
+  </script>
+</body>
+</html>

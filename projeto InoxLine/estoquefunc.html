@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="Logoinoxline.png" /> 
+  <title>InoxLine Metalúrgica</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      background: linear-gradient(90deg, #0a3d62, #3c6382);
+      color: white;
+      padding: 15px 30px;
+    }
+
+    header img {
+      width: 110px;
+      margin-right: 15px;
+      border-radius: 20px;
+    }
+
+    nav {
+      background-color: #2f3640;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: 500;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 40px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.12);
+    }
+
+    h2 {
+      color: #0a3d62;
+    }
+
+    .produto-card {
+      background: #f1f2f6;
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+      margin-top: 10px;
+    }
+
+    .btn-nc { background-color: #c0392b; }
+    .btn-update { background-color: #27ae60; }
+
+    /* Modal atualizar informações */
+    #modalInfo {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #modalContent {
+      background: white;
+      padding: 25px;
+      width: 350px;
+      border-radius: 10px;
+    }
+  </style>
+
+</head>
+<body>
+
+<header>
+  <img src="Logoinoxline.png" alt="Logo InoxLine Metalúrgica" style="border-radius: 20px; width:110px;">
+  <h1>InoxLine Metalúrgica</h1>
+</header>
+
+<nav>
+  <a href="cadastrofunc.html">Produto</a>
+  <a href="estoquefunc.html">Estoque</a>
+  <a href="gerenciarinspecoes.html">Inspeções</a>
+  <a href="contatofunc.html">Contato</a>
+</nav>
+
+<main>
+
+  <h2>Produtos Registrados</h2>
+  <div id="listaProdutos"></div>
+
+</main>
+
+<footer style="background:#2f3640;color:white;text-align:center;padding:15px;">
+  © 2025 InoxLine Metalúrgica | Todos os direitos reservados
+</footer>
+
+<!-- Modal NC -->
+<div id="modalNC" 
+     style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+     background: rgba(0,0,0,0.5); display: none; justify-content: center; 
+     align-items: center;">
+
+  <div style="background:white; padding:25px; width:350px; border-radius:10px;">
+    <h3>Registrar Não Conformidade</h3>
+
+    <textarea id="inputNC" 
+              style="width:100%; height:100px; margin-top:10px; padding:8px; resize:none;"
+              placeholder="Descreva a NC aqui..."></textarea>
+
+    <br><br>
+    <button onclick="salvarNC()" style="background:#27ae60;" class="btn">Salvar</button>
+    <button onclick="fecharModalNC()" style="background:#c0392b;" class="btn">Cancelar</button>
+  </div>
+
+</div>
+
+
+<div id="modalInfo">
+  <div id="modalContent">
+    <h3>Atualizar Informações</h3>
+
+    <label>Status:</label><br>
+    <input id="infoStatus" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+
+    <label>Responsável:</label><br>
+    <input id="infoResp" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+
+    <label>Data:</label><br>
+    <input id="infoData" style="width:100%; padding:8px; margin-bottom:10px;"><br>
+
+    <label>Observações:</label><br>
+    <textarea id="infoObs" 
+              style="width:100%; padding:8px; height:70px; resize:none;"></textarea><br><br>
+
+    <button onclick="salvarAtualizacao()" style="background:#27ae60;" class="btn">Salvar</button>
+    <button onclick="fecharModalInfo()" style="background:#c0392b;" class="btn">Cancelar</button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+
+const firebaseConfig = {
+apiKey: "AIzaSyAc_lowJxwAlE-azXV0BUZEta9344_fXqQ",
+authDomain: "produtosp-i.firebaseapp.com",
+databaseURL: "https://produtosp-i-default-rtdb.firebaseio.com",
+projectId: "produtosp-i",
+storageBucket: "produtosp-i.firebasestorage.app",
+messagingSenderId: "951845239282",
+appId: "1:951845239282:web:e6d9d795194072a0a2d36b"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+let produtoAtual = null;
+
+window.onload = carregarProdutos;
+
+function carregarProdutos() {
+  db.ref("produtos").on("value", snap => {
+    const produtos = snap.val();
+    exibirProdutos(produtos);
+  });
+}
+
+function exibirProdutos(produtos) {
+  const lista = document.getElementById("listaProdutos");
+  lista.innerHTML = "";
+
+  if (!produtos) {
+    lista.innerHTML = "<p>Nenhum produto encontrado.</p>";
+    return;
+  }
+
+  for (let id in produtos) {
+    const p = produtos[id];
+
+    const card = document.createElement("div");
+    card.className = "produto-card";
+
+    card.innerHTML = `
+      <b>Produto:</b> ${p.nome}<br>
+      <b>Categoria:</b> ${p.categoria}<br>
+      <b>Quantidade:</b> ${p.quantidade}<br><br>
+
+      <h4>Qualidade</h4>
+      <b>Status:</b> ${p.qualidade?.status || "—"}<br>
+      <b>Responsável:</b> ${p.qualidade?.responsavel || "—"}<br>
+      <b>Data:</b> ${p.qualidade?.data || "—"}<br>
+      <b>Observações:</b> ${p.qualidade?.obs || "—"}<br><br>
+
+      <button class="btn btn-nc" onclick="registrarNC('${id}')">Registrar NC</button>
+      <button class="btn btn-update" onclick="abrirAtualizacao('${id}')">Atualizar Informações</button>
+    `;
+
+    lista.appendChild(card);
+  }
+}
+
+function registrarNC(id) {
+  produtoAtual = id;
+  document.getElementById("modalNC").style.display = "flex";
+}
+
+function fecharModalNC() {
+  document.getElementById("modalNC").style.display = "none";
+}
+
+function salvarNC() {
+  const motivo = document.getElementById("inputNC").value;
+
+  if (!motivo.trim()) return alert("Digite algo!");
+
+  db.ref("produtos/" + produtoAtual + "/ncs").push({
+    motivo,
+    data: new Date().toLocaleDateString()
+  });
+
+  fecharModalNC();
+  alert("NC salva!");
+}
+
+function abrirAtualizacao(id) {
+  produtoAtual = id;
+
+  document.getElementById("modalInfo").style.display = "flex";
+
+  // carregar dados existentes
+  db.ref("produtos/" + id + "/qualidade").once("value").then(snap => {
+    const q = snap.val() || {};
+
+    document.getElementById("infoStatus").value = q.status || "";
+    document.getElementById("infoResp").value = q.responsavel || "";
+    document.getElementById("infoData").value = q.data || "";
+    document.getElementById("infoObs").value = q.obs || "";
+  });
+}
+
+function fecharModalInfo() {
+  document.getElementById("modalInfo").style.display = "none";
+}
+
+function salvarAtualizacao() {
+
+  const dados = {
+    status: document.getElementById("infoStatus").value,
+    responsavel: document.getElementById("infoResp").value,
+    data: document.getElementById("infoData").value,
+    obs: document.getElementById("infoObs").value
+  };
+
+  db.ref("produtos/" + produtoAtual + "/qualidade").set(dados);
+
+  fecharModalInfo();
+  alert("Informações atualizadas!");
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="Logoinoxline.png" /> 
+  <title>InoxLine - Gerenciar Inspeções</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(90deg, #0a3d62, #3c6382);
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 15px 30px;
+    }
+
+    header img {
+      width: 110px;
+      margin-right: 15px;
+      border-radius: 20px;
+    }
+
+    nav {
+      background-color: #2f3640;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      color: #3498db;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #0a3d62;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .busca-container {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 15px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #0a3d62;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #3c6382;
+    }
+
+    .btn-editar {
+      background-color: #f39c12;
+    }
+
+    .btn-salvar {
+      background-color: #27ae60;
+    }
+
+    .btn-cancelar {
+      background-color: #95a5a6;
+    }
+
+    .mensagem {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .sucesso {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .erro {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #0a3d62;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .status-aprovado {
+      color: green;
+      font-weight: bold;
+    }
+
+    .status-reprovado {
+      color: red;
+      font-weight: bold;
+    }
+
+    .status-analise {
+      color: orange;
+      font-weight: bold;
+    }
+
+    .form-edicao {
+      background-color: #f8f9fa;
+      padding: 25px;
+      border-radius: 10px;
+      margin-top: 30px;
+      border: 2px solid #3498db;
+      display: none;
+    }
+
+    .form-edicao h3 {
+      color: #0a3d62;
+      margin-top: 0;
+    }
+
+    .botoes-form {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .botoes-form button {
+      flex: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="Logoinoxline.png" alt="Logo InoxLine Metalúrgica">
+  <h1>InoxLine Metalúrgica</h1>
+</header>
+
+<nav>
+  <a href="cadastrofunc.html">Produto</a>
+  <a href="estoquefunc.html">Estoque</a>
+    <a href="gerenciarinspecoes.html">Inspeções</a>
+  <a href="contatofunc.html">Contato</a>
+
+</nav>
+
+<main>
+  <h2>Gerenciar Inspeções</h2>
+
+  <div id="mensagem" class="mensagem"></div>
+
+  <div class="busca-container">
+    <h3>Buscar Inspeções</h3>
+    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px;">
+      <label>
+        Produto ou Lote:<br>
+        <input type="text" id="buscaTexto" placeholder="Digite para buscar...">
+      </label>
+      
+      <label>
+        Status:<br>
+        <select id="buscaStatus">
+          <option value="">Todos</option>
+          <option value="Em Análise">Em Análise</option>
+          <option value="Aprovado">Aprovado</option>
+          <option value="Reprovado">Reprovado</option>
+        </select>
+      </label>
+      
+      <div style="align-self: end;">
+        <button onclick="buscarInspecoes()" style="width: 100%;">BUSCAR</button>
+      </div>
+    </div>
+  </div>
+
+  <h3>Inspeções Registradas</h3>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Lote</th>
+        <th>Status</th>
+        <th>Data</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody id="tabelaInspecoes">
+      <tr>
+        <td colspan="5" style="text-align: center;">Carregando inspeções...</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div id="formEdicao" class="form-edicao">
+    <h3>Editar Inspeção</h3>
+    <input type="hidden" id="editarId">
+    
+    <form id="formEditarInspecao">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <label>Produto:<br>
+          <input id="editarProdutoNome" type="text" required>
+        </label>
+
+        <label>Lote:<br>
+          <input id="editarProdutoLote" type="text" required>
+        </label>
+
+        <label>Tipo de Inspeção:<br>
+          <select id="editarTipoInspecao" required>
+            <option value="">Selecione...</option>
+            <option value="Estacionado">Estacionado</option>
+            <option value="Processo">Processo</option>
+            <option value="Final">Final</option>
+          </select>
+        </label>
+
+        <label>Status:<br>
+          <select id="editarStatusInspecao" required>
+            <option value="">Selecione...</option>
+            <option value="Em Análise">Em Análise</option>
+            <option value="Em Enter">Em Espera</option>
+            <option value="Aprovado">Aprovado</option>
+            <option value="Reprovado">Reprovado</option>
+          </select>
+        </label>
+
+        <label>Responsável:<br>
+          <input id="editarResponsavel" type="text" required>
+        </label>
+
+        <label>Data da Inspeção:<br>
+          <input id="editarDataInspecao" type="date" required>
+        </label>
+      </div>
+
+      <label>Resultado:<br>
+        <textarea id="editarResultado" rows="3" required></textarea>
+      </label>
+
+      <label>Observações:<br>
+        <textarea id="editarObservacoes" rows="2"></textarea>
+      </label>
+
+      <div class="botoes-form">
+        <button type="submit" class="btn-salvar">SALVAR ALTERAÇÕES</button>
+        <button type="button" onclick="cancelarEdicao()" class="btn-cancelar">CANCELAR</button>
+      </div>
+    </form>
+  </div>
+
+</main>
+
+<footer style="text-align:center;padding:20px;background:#2f3640;color:#fff;">
+  © 2025 InoxLine Metalúrgica | Todos os direitos reservados
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAc_lowJxwAlE-azXV0BUZEta9344_fXqQ",
+  authDomain: "produtosp-i.firebaseapp.com",
+  databaseURL: "https://produtosp-i-default-rtdb.firebaseio.com",
+  projectId: "produtosp-i",
+  storageBucket: "produtosp-i.firebasestorage.app",
+  messagingSenderId: "951845239282",
+  appId: "1:951845239282:web:e6d9d795194072a0a2d36b"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const mensagem = document.getElementById('mensagem');
+const tabelaInspecoes = document.getElementById('tabelaInspecoes');
+const formEdicao = document.getElementById('formEdicao');
+const formEditarInspecao = document.getElementById('formEditarInspecao');
+
+let todasInspecoes = {};
+
+function exibirMensagem(texto, tipo = 'erro') {
+  mensagem.textContent = texto;
+  mensagem.className = `mensagem ${tipo}`;
+  setTimeout(() => {
+    mensagem.textContent = '';
+    mensagem.className = 'mensagem';
+  }, 3000);
+}
+
+function formatarData(dataString) {
+  if (!dataString) return '';
+  const data = new Date(dataString);
+  return data.toLocaleDateString('pt-BR');
+}
+
+function getStatusClass(status) {
+  switch(status) {
+    case 'Aprovado': return 'status-aprovado';
+    case 'Reprovado': return 'status-reprovado';
+    case 'Em Análise': return 'status-analise';
+    default: return '';
+  }
+}
+
+function carregarTodasInspecoes() {
+  db.ref('inspecoes').on('value', (snapshot) => {
+    todasInspecoes = snapshot.val() || {};
+    buscarInspecoes(); 
+  });
+}
+
+function buscarInspecoes() {
+  const buscaTexto = document.getElementById('buscaTexto').value.toLowerCase();
+  const buscaStatus = document.getElementById('buscaStatus').value;
+  
+  if (!todasInspecoes || Object.keys(todasInspecoes).length === 0) {
+    tabelaInspecoes.innerHTML = `
+      <tr>
+        <td colspan="5" style="text-align: center;">Nenhuma inspeção encontrada.</td>
+      </tr>
+    `;
+    return;
+  }
+  
+  let html = '';
+  let encontrouAlgo = false;
+  
+  Object.entries(todasInspecoes).forEach(([key, inspecao]) => {
+
+    const produtoMatch = buscaTexto === '' || 
+      (inspecao.produtoNome && inspecao.produtoNome.toLowerCase().includes(buscaTexto)) ||
+      (inspecao.produtoLote && inspecao.produtoLote.toLowerCase().includes(buscaTexto));
+    
+    const statusMatch = buscaStatus === '' || inspecao.statusInspecao === buscaStatus;
+    
+    if (produtoMatch && statusMatch) {
+      encontrouAlgo = true;
+      const statusClass = getStatusClass(inspecao.statusInspecao);
+      
+      html += `
+        <tr>
+          <td>${inspecao.produtoNome || ''}</td>
+          <td>${inspecao.produtoLote || ''}</td>
+          <td class="${statusClass}">${inspecao.statusInspecao || ''}</td>
+          <td>${formatarData(inspecao.dataInspecao)}</td>
+          <td>
+            <button onclick="editarInspecao('${key}')" class="btn-editar">EDITAR</button>
+          </td>
+        </tr>
+      `;
+    }
+  });
+  
+  if (!encontrouAlgo) {
+    html = `
+      <tr>
+        <td colspan="5" style="text-align: center;">Nenhuma inspeção encontrada com os filtros atuais.</td>
+      </tr>
+    `;
+  }
+  
+  tabelaInspecoes.innerHTML = html;
+}
+
+function editarInspecao(inspecaoId) {
+  const inspecao = todasInspecoes[inspecaoId];
+  
+  if (!inspecao) {
+    exibirMensagem('Inspeção não encontrada!', 'erro');
+    return;
+  }
+  
+
+  document.getElementById('editarId').value = inspecaoId;
+  document.getElementById('editarProdutoNome').value = inspecao.produtoNome || '';
+  document.getElementById('editarProdutoLote').value = inspecao.produtoLote || '';
+  document.getElementById('editarTipoInspecao').value = inspecao.tipoInspecao || '';
+  document.getElementById('editarStatusInspecao').value = inspecao.statusInspecao || '';
+  document.getElementById('editarResponsavel').value = inspecao.responsavel || '';
+  document.getElementById('editarDataInspecao').value = inspecao.dataInspecao || '';
+  document.getElementById('editarResultado').value = inspecao.resultado || '';
+  document.getElementById('editarObservacoes').value = inspecao.observacoes || '';
+  
+
+  formEdicao.style.display = 'block';
+  
+
+  formEdicao.scrollIntoView({ behavior: 'smooth' });
+}
+
+formEditarInspecao.addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const inspecaoId = document.getElementById('editarId').value;
+  
+  if (!inspecaoId) {
+    exibirMensagem('Erro: ID da inspeção não encontrado!', 'erro');
+    return;
+  }
+  
+  const inspecaoAtualizada = {
+    produtoNome: document.getElementById('editarProdutoNome').value.trim(),
+    produtoLote: document.getElementById('editarProdutoLote').value.trim(),
+    tipoInspecao: document.getElementById('editarTipoInspecao').value,
+    statusInspecao: document.getElementById('editarStatusInspecao').value,
+    responsavel: document.getElementById('editarResponsavel').value.trim(),
+    dataInspecao: document.getElementById('editarDataInspecao').value,
+    resultado: document.getElementById('editarResultado').value.trim(),
+    observacoes: document.getElementById('editarObservacoes').value.trim(),
+    dataAtualizacao: new Date().toISOString()
+  };
+  
+
+  db.ref('inspecoes/' + inspecaoId).update(inspecaoAtualizada)
+    .then(() => {
+      exibirMensagem('Inspeção atualizada com sucesso!', 'sucesso');
+      cancelarEdicao();
+      buscarInspecoes();
+    })
+    .catch((error) => {
+      exibirMensagem('Erro ao atualizar inspeção: ' + error.message, 'erro');
+    });
+});
+
+function cancelarEdicao() {
+  formEdicao.style.display = 'none';
+  formEditarInspecao.reset();
+  document.getElementById('editarId').value = '';
+}
+
+
+window.addEventListener('DOMContentLoaded', function() {
+  carregarTodasInspecoes();
+  
+  // Permite buscar pressionando Enter
+  document.getElementById('buscaTexto').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      buscarInspecoes();
+    }
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="Logoinoxline.png"/>
+  <title>InoxLine - Acesso Funcionário</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background: linear-gradient(135deg, #0b1b2a, #12293f);
+      color: #e0e0e0;
+    }
+
+    .side-banner {
+      flex: 1;
+      background: linear-gradient(rgba(10, 20, 35, 0.6), rgba(10, 20, 35, 0.6)), url("funcionarios.png") center center / cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .side-banner h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #f1f1f1;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .side-banner p {
+      max-width: 400px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: #cfd8dc;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    .login-section {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #1e2f44;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-section::before {
+      content: "";
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(52, 152, 219, 0.15) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      z-index: 0;
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 50px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+      z-index: 1;
+      backdrop-filter: blur(8px);
+      text-align: center;
+    }
+
+    .login-box h1 {
+      text-align: center;
+      color: #fff;
+      font-size: 28px;
+      margin-bottom: 40px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .login-box h1.admin-title {
+      font-size: 20px;
+      color: #b0bec5;
+      margin-bottom: 5px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: none;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #b0bec5;
+      font-size: 14px;
+    }
+
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    input[type="email"]::placeholder, input[type="password"]::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    input[type="email"]:focus, input[type="password"]:focus {
+      background-color: rgba(255, 255, 255, 0.12);
+      border: 1px solid #3498db;
+      box-shadow: 0 0 8px rgba(52, 152, 219, 0.4);
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #2980b9, #1f5f8b);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    button[type="submit"]:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    }
+
+    #mensagem {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 15px;
+      font-weight: 600;
+      min-height: 24px;
+    }
+
+    .mensagem-erro {
+      color: #ff5252;
+    }
+    
+    .mensagem-sucesso {
+      color: #4caf50; /* ADICIONADO - falta esta classe no CSS */
+    }
+
+  </style>
+</head>
+<body>
+  <div class="side-banner">
+    <h2>InoxLine Metalúrgica</h2>
+    <p>Sua dedicação é o nosso aço mais forte! Lembre-se: a Excelência em processos e qualidade certificada começa no seu posto. Use o sistema para registrar seus dados e ajude a manter os padrões de qualidade InoxLine em cada produto.</p>
+  </div>
+
+  <div class="login-section">
+    <div class="login-box">
+      <h1 class="admin-title">Acesso</h1>
+      <h1>FUNCIONÁRIO</h1>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="Digite seu E-mail" required>
+        </div>
+
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" placeholder="Digite sua senha" required>
+        </div>
+
+        <button type="submit" id="btnEntrar">ENTRAR</button>
+        
+      </form>
+
+      <div id="mensagem"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCBtmJIfsZHYAvViyc_SUIwsW3gqHk-QUU",
+      authDomain: "inoxline-projeto.firebaseapp.com",
+      databaseURL: "https://inoxline-projeto-default-rtdb.firebaseio.com",
+      projectId: "inoxline-projeto",
+      storageBucket: "inoxline-projeto.firebasestorage.app",
+      messagingSenderId: "597834940795",
+      appId: "1:597834940795:web:eaa17701e5de5549047dde",
+      measurementId: "G-42Y2SF8PZS"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+
+    const mensagemElement = document.getElementById("mensagem");
+    const loginForm = document.getElementById("loginForm");
+    const btnEntrar = document.getElementById("btnEntrar");
+
+   
+    const emailsFuncionarios = [
+      "danielfunc@gmail.com",
+      "nataliafunc@gmail.com", 
+      "larissafunc@gmail.com"
+    ];
+
+    function exibirMensagem(texto, tipo = "erro") {
+      mensagemElement.textContent = texto;
+      mensagemElement.className = tipo === "sucesso" ? "mensagem-sucesso" : "mensagem-erro";
+    }
+
+    // ADICIONAR ESTA FUNÇÃO QUE ESTAVA FALTANDO
+    function toggleBotao(estado) {
+      btnEntrar.disabled = estado;
+      btnEntrar.textContent = estado ? "ENTRANDO..." : "ENTRAR";
+    }
+
+    function verificarPermissoes(userId, email) {
+      const userRef = ref(database, 'users/' + userId);
+      
+      get(userRef)
+        .then((snapshot) => {
+          const userData = snapshot.val();
+          
+          if (userData) {
+            console.log("Dados do usuário no DB:", userData);
+            
+           
+            if (userData.role === "funcionario" || 
+                userData.role === "funcionário" ||
+                userData.role === "func" ||
+                emailsFuncionarios.includes(email)) {
+              
+              console.log("Usuário autorizado! Redirecionando para politicafunc.html...");
+              // REDIRECIONAMENTO AQUI
+              window.location.href = "politicafunc.html"; 
+              return;
+            } 
+            else {
+              exibirMensagem("Acesso restrito a funcionários autorizados.", "erro");
+              console.log("Role não autorizado:", userData.role);
+              auth.signOut();
+            }
+          } else {
+           
+            console.log("Usuário não encontrado no DB, verificando por email...");
+            
+            if (emailsFuncionarios.includes(email)) {
+              console.log("Email autorizado! Redirecionando para politicafunc.html...");
+
+              window.location.href = "cadastrofunc.html"; 
+              return;
+            } else {
+              exibirMensagem("Usuário não autorizado para esta área.", "erro");
+              auth.signOut();
+            }
+          }
+        })
+        .catch((error) => {
+          console.error("Erro ao verificar permissões:", error);
+          
+          
+          if (emailsFuncionarios.includes(email)) {
+            console.log("Email conhecido, permitindo acesso apesar do erro no DB");
+
+            window.location.href = "cadastrofunc.html"; 
+            return;
+          }
+          
+          exibirMensagem("Erro ao verificar permissões. Contate o administrador.", "erro");
+          auth.signOut();
+          toggleBotao(false);
+        });
+    }
+
+    loginForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value.trim();
+
+      if (!email || !senha) {
+        exibirMensagem("Preencha todos os campos.", "erro");
+        return;
+      }
+
+      toggleBotao(true);
+     
+
+      console.log("Tentando login com:", email, "senha: ******");
+
+      signInWithEmailAndPassword(auth, email, senha)
+        .then((userCredential) => {
+          verificarPermissoes(userCredential.user.uid, email);
+        })
+        .catch((error) => {
+          toggleBotao(false);
+          let mensagemErro = "Erro no login.";
+          
+          console.error("Erro Firebase:", error.code, error.message);
+          
+          switch (error.code) {
+            case 'auth/invalid-email':
+              mensagemErro = "E-mail inválido!";
+              break;
+            case 'auth/user-not-found':
+              mensagemErro = "Usuário não encontrado! Verifique se o usuário está cadastrado no Firebase Authentication.";
+              break;
+            case 'auth/wrong-password':
+              mensagemErro = "Senha incorreta!";
+              break;
+            case 'auth/user-disabled':
+              mensagemErro = "Esta conta foi desativada.";
+              break;
+            case 'auth/too-many-requests':
+              mensagemErro = "Muitas tentativas. Tente novamente mais tarde.";
+              break;
+            case 'auth/network-request-failed':
+              mensagemErro = "Erro de conexão. Verifique sua internet.";
+              break;
+            default:
+              mensagemErro = `Erro: ${error.message}`;
+          }
+          exibirMensagem(mensagemErro, "erro");
+        });
+    });
+
+
+    document.getElementById("email").addEventListener("click", function() {
+      
+      if (!this.value) {
+        this.value = "nataliafunc@gmail.com";
+        document.getElementById("senha").value = "123456";
+      }
+    });
+
+    document.getElementById("email").focus();
+
+    document.getElementById("senha").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        loginForm.dispatchEvent(new Event("submit"));
+      }
+    });
+
+    console.log("Página de login de funcionário carregada");
+    console.log("Emails de funcionários conhecidos:", emailsFuncionarios);
+    console.log("Dica: Clique no campo de email para preenchimento automático de teste");
+  </script>
+</body>
+</html>

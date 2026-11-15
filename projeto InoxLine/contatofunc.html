@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="Logoinoxline.png" /> 
+  <title>InoxLine Metalúrgica</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(90deg, #0a3d62, #3c6382);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 15px 30px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    header img {
+      width: 110px;
+      height: auto;
+      margin-right: 15px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8em;
+      letter-spacing: 1px;
+    }
+
+    nav {
+      background-color: #2f3640;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: #f5f6fa;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #00a8ff;
+    }
+
+    main {
+    max-width: 1100px;
+    margin: 40px auto;
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    flex: 1;
+    }
+
+    h2 {
+      color: #0a3d62;
+      margin-bottom: 15px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    input, textarea {
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: none;
+      min-height: 120px;
+    }
+
+    button {
+      background-color: #0a3d62;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      width: 200px;
+    }
+
+    button:hover {
+      background-color: #3c6382;
+    }
+
+    #mensagem {
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    footer {
+      background-color: #2f3640;
+      color: #dcdde1;
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="Logoinoxline.png" alt="Logo InoxLine Metalúrgica" style="border-radius: 20px; width:110px;">
+    <h1>InoxLine Metalúrgica</h1>
+  </header>
+
+  <nav>
+    <a href="cadastrofunc.html">Produto</a>
+    <a href="estoquefunc.html">Estoque</a>
+    <a href="gerenciarinspecoes.html">Inspeções</a>
+    <a href="contatofunc.html">Contato</a>
+  </nav>
+
+  <main>
+    <section>
+      <h2>Entre em Contato</h2>
+      <p>Preencha o formulário abaixo para enviar uma mensagem para a nossa equipe. Responderemos o mais breve possível.</p>
+      
+      <form id="formContato">
+        <label>Nome:
+          <input type="text" id="nome" required>
+        </label>
+
+        <label>Email:
+          <input type="email" id="email" required>
+        </label>
+
+        <label>Assunto:
+          <input type="text" id="assunto" required>
+        </label>
+
+        <label>Mensagem:
+          <textarea id="mensagemTexto" required></textarea>
+        </label>
+
+        <button type="submit">Enviar Mensagem</button>
+      </form>
+
+      <p id="mensagem"></p>
+    </section>
+
+    <section>
+      <h2>Nossos Contatos</h2>
+      <p><strong>Endereço:</strong> Rua Guatemala, 19 - Diadema, São Paulo</p>
+      <p><strong>Telefone:</strong> (11) 1234-5678</p>
+      <p><strong>Email:</strong> contato@inoxline.com.br</p>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 InoxLine Metalúrgica | Todos os direitos reservados
+  </footer>
+
+  <script>
+    
+    document.getElementById('formContato').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value;
+      const email = document.getElementById('email').value;
+      const assunto = document.getElementById('assunto').value;
+      const mensagem = document.getElementById('mensagemTexto').value;
+
+      console.log("Mensagem enviada:", { nome, email, assunto, mensagem });
+
+      document.getElementById('mensagem').innerText = "Mensagem enviada com sucesso!";
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>

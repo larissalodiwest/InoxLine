@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="Logoinoxline.png" /> 
+  <title>InoxLine Metalúrgica</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(90deg, #0a3d62, #3c6382);
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 15px 30px;
+    }
+
+    header img {
+      width: 110px;
+      margin-right: 15px;
+    }
+
+    nav {
+      background-color: #2f3640;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: 500;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    input, select, textarea {
+      width: 300px;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #0a3d62;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #3c6382;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="Logoinoxline.png" alt="Logo InoxLine Metalúrgica" style="border-radius: 20px; width:110px;">
+  <h1>InoxLine Metalúrgica</h1>
+</header>
+
+<nav>
+  <a href="cadastroadm.html">Produto</a>
+  <a href="estoqueadm.html">Estoque</a>
+  <a href="controleadm.html">Controle</a>
+  <a href="contatoadm.html">Contato</a>
+</nav>
+
+<main>
+
+  <h2>Cadastrar Produto</h2>
+
+  <form id="formProduto">
+
+    <label>Nome do Produto:<br>
+      <input id="nomeProduto" required>
+    </label><br><br>
+
+    <label>Categoria:<br>
+      <input id="categoriaProduto" required>
+    </label><br><br>
+
+    <label>Quantidade:<br>
+      <input type="number" id="quantidadeProduto" required>
+    </label><br><br>
+
+    <h3>Qualidade Inicial</h3>
+
+    <label>Status:<br>
+      <select id="qualidadeStatus">
+        <option>Em Análise</option>
+        <option>Aprovado</option>
+        <option>Reprovado</option>
+      </select>
+    </label><br><br>
+
+    <label>Responsável pela Inspeção:<br>
+      <input id="qualidadeResponsavel">
+    </label><br><br>
+
+    <label>Data de Inspeção:<br>
+      <input type="date" id="qualidadeData">
+    </label><br><br>
+
+    <label>Observações:<br>
+      <textarea id="qualidadeObs"></textarea>
+    </label><br><br>
+
+    <button type="submit">Cadastrar Produto</button>
+
+  </form>
+
+</main>
+
+<footer style="text-align:center;padding:20px;background:#2f3640;color:#fff;">
+  © 2025 InoxLine Metalúrgica | Todos os direitos reservados
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+apiKey: "AIzaSyAc_lowJxwAlE-azXV0BUZEta9344_fXqQ",
+authDomain: "produtosp-i.firebaseapp.com",
+databaseURL: "https://produtosp-i-default-rtdb.firebaseio.com",
+projectId: "produtosp-i",
+storageBucket: "produtosp-i.firebasestorage.app",
+messagingSenderId: "951845239282",
+appId: "1:951845239282:web:e6d9d795194072a0a2d36b"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+formProduto.addEventListener("submit", e => {
+  e.preventDefault();
+
+  const produto = {
+    nome: nomeProduto.value,
+    categoria: categoriaProduto.value,
+    quantidade: quantidadeProduto.value,
+
+    qualidade: {
+      status: qualidadeStatus.value,
+      responsavel: qualidadeResponsavel.value,
+      data: qualidadeData.value,
+      obs: qualidadeObs.value
+    },
+
+    ncs: []
+  };
+
+  db.ref("produtos").push(produto);
+  alert("Produto cadastrado com sucesso!");
+  formProduto.reset();
+});
+</script>
+
+</body>
+</html>
